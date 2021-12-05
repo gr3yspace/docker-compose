@@ -1,0 +1,30 @@
+---
+version: "2.1"
+services:
+  librespeed:
+    image: ghcr.io/linuxserver/librespeed
+    container_name: librespeed
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+    volumes:
+      - /home/gr3yspace/LibreSpeed/config:/config
+    ports:
+      - 9910:80
+    restart: unless-stopped
+
+
+  smokeping:
+    image: ghcr.io/linuxserver/smokeping
+    container_name: smokeping
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+    volumes:
+      - /home/gr3yspace/SmokePing/config:/config
+      - /home/gr3yspace/SmokePing/data:/data
+    ports:
+      - 8111:80
+    restart: unless-stopped
