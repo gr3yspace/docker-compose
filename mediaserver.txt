@@ -1,0 +1,50 @@
+version: "2.1"
+services:
+  transmission:
+    image: lscr.io/linuxserver/transmission:latest
+    container_name: transmission
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_york
+      - USER=[USERNAME]
+      - PASS=[PASSWORD]
+    volumes:
+      - /home/gr3yspace/Transmission/config:/config
+      - /mnt/samba/Movies:/downloads
+      - /home/gr3yspace/Jackett/downloads:/watch
+    ports:
+      - 9091:9091
+      - 51413:51413
+      - 51413:51413/udp
+    restart: unless-stopped
+  
+  jackett:
+    image: lscr.io/linuxserver/jackett:latest
+    container_name: jackett
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_york
+      - AUTO_UPDATE=true
+    volumes:
+      - /home/gr3yspace/Jackett/config:/config
+      - /home/gr3yspace/Jackett/downloads:/downloads
+    ports:
+      - 9117:9117
+    restart: unless-stopped
+    
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_york
+    volumes:
+      - /home/Radarr/config:/config
+      - /mnt/samba/Movies:/movies
+      - /mnt/samba/Movies:/downloads
+    ports:
+      - 7878:7878
+    restart: unless-stopped
